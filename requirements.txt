@@ -1,0 +1,27 @@
+# FastAPI stack
+fastapi==0.115.14
+uvicorn[standard]==0.34.3
+python-dotenv==1.0.1
+pydantic==2.13.4
+
+# ML — core
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.4.2
+xgboost==2.1.4
+joblib==1.4.2
+shap==0.52.0
+
+# ML — DistilBERT
+torch==2.12.1
+transformers==4.55.4
+safetensors==0.8.0
+
+# ONNX export + inference (optional but recommended)
+optimum[onnxruntime]==2.0.0
+onnxruntime==1.24.4
+
+# NLP preprocessing
+spacy==3.7.4
+
+# After install, run: python -m spacy download en_core_web_sm

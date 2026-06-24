@@ -1,0 +1,259 @@
+/* ============================================================
+   JobGuard — Global Design Tokens & Reset
+   All component .module.css files reference these variables.
+   Never hardcode hex values in components — always use a var().
+   ============================================================ */
+
+/* ── Palette ─────────────────────────────────────────────── */
+:root {
+  /* CSS HEX — provided palette */
+  --molten-lava:     #780000;   /* deep danger red  — critical fraud badges        */
+  --brick-red:       #c1121f;   /* primary accent   — buttons, score bar, links    */
+  --papaya-whip:     #fdf0d5;   /* warm off-white   — page background              */
+  --deep-space-blue: #003049;   /* dark navy        — header, primary text         */
+  --steel-blue:      #669bbc;   /* medium blue      — safe indicators, secondary   */
+
+  /* Derived semantic tokens */
+  --color-bg:            var(--papaya-whip);
+  --color-bg-card:       #ffffff;
+  --color-bg-header:     var(--deep-space-blue);
+
+  --color-text-primary:  var(--deep-space-blue);
+  --color-text-secondary:#4a5568;
+  --color-text-inverse:  #ffffff;
+  --color-text-muted:    #8a96a3;
+
+  --color-accent:        var(--brick-red);
+  --color-accent-deep:   var(--molten-lava);
+  --color-safe:          var(--steel-blue);
+  --color-caution:       #d97706;   /* amber — not in palette, needed for CAUTION state */
+
+  --color-border:        #e8dfc8;   /* warm tone to match papaya-whip bg */
+  --color-border-strong: #c8bfa8;
+
+  /* Score-state colors — used by ScoreGauge and ResultPanel */
+  --color-score-low:     var(--steel-blue);    /* score < 0.35  LEGITIMATE */
+  --color-score-mid:     #d97706;              /* score 0.35–0.65  CAUTION */
+  --color-score-high:    var(--brick-red);     /* score 0.65–0.85  SUSPICIOUS */
+  --color-score-critical:var(--molten-lava);   /* score > 0.85  very suspicious */
+
+  /* SHAP direction colors */
+  --color-shap-fraud:    var(--brick-red);
+  --color-shap-safe:     var(--steel-blue);
+
+  /* ── Typography ──────────────────────────────────────── */
+  --font-serif:  'IBM Plex Serif', Georgia, serif;
+  --font-sans:   'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono:   'IBM Plex Mono', 'Courier New', monospace;
+
+  --text-xs:    0.75rem;    /*  12px */
+  --text-sm:    0.875rem;   /*  14px */
+  --text-base:  1rem;       /*  16px */
+  --text-lg:    1.125rem;   /*  18px */
+  --text-xl:    1.25rem;    /*  20px */
+  --text-2xl:   1.5rem;     /*  24px */
+  --text-3xl:   1.875rem;   /*  30px */
+  --text-4xl:   2.25rem;    /*  36px */
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold:600;
+
+  --leading-tight:  1.25;
+  --leading-snug:   1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed:1.625;
+
+  /* ── Spacing scale (4px base) ────────────────────────── */
+  --space-1:  0.25rem;   /*  4px */
+  --space-2:  0.5rem;    /*  8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+
+  /* ── Radii ───────────────────────────────────────────── */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+  --radius-full:9999px;
+
+  /* ── Shadows ─────────────────────────────────────────── */
+  --shadow-sm:  0 1px 3px rgba(0, 48, 73, 0.08);
+  --shadow-md:  0 4px 12px rgba(0, 48, 73, 0.10);
+  --shadow-lg:  0 8px 24px rgba(0, 48, 73, 0.12);
+  --shadow-card:0 2px 8px rgba(0, 48, 73, 0.08), 0 0 0 1px var(--color-border);
+
+  /* ── Transitions ─────────────────────────────────────── */
+  --transition-fast:   120ms ease;
+  --transition-normal: 220ms ease;
+  --transition-slow:   350ms ease;
+
+  /* ── Layout ──────────────────────────────────────────── */
+  --max-width:      1100px;
+  --content-width:  720px;
+  --header-height:  64px;
+}
+
+/* ── Reset ───────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Typography base ─────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  color: var(--color-text-primary);
+}
+
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl);  }
+
+p {
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+a:hover { color: var(--color-accent-deep); }
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+/* ── Focus visible ───────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Scrollbar (webkit) ──────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: var(--color-bg); }
+::-webkit-scrollbar-thumb  { background: var(--color-border-strong); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+/* ── Utility classes ─────────────────────────────────────── */
+
+/* Visually hidden — for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Shimmer skeleton animation */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    #f5ecda 50%,
+    var(--color-border) 75%
+  );
+  background-size: 1200px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: var(--radius-md);
+}
+
+/* Fade-in animation — used by ResultPanel on mount */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp var(--transition-slow) ease both;
+}
+
+/* Score label badge base — extended per-state in ResultPanel */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.badge--legitimate {
+  background: rgba(102, 155, 188, 0.15);
+  color: var(--steel-blue);
+  border: 1px solid rgba(102, 155, 188, 0.35);
+}
+
+.badge--caution {
+  background: rgba(217, 119, 6, 0.12);
+  color: var(--color-caution);
+  border: 1px solid rgba(217, 119, 6, 0.30);
+}
+
+.badge--suspicious {
+  background: rgba(193, 18, 31, 0.10);
+  color: var(--brick-red);
+  border: 1px solid rgba(193, 18, 31, 0.25);
+}

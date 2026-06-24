@@ -1,0 +1,349 @@
+/* ── Wrapper ───────────────────────────────────────────────── */
+
+.wrapper {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* ── Hero ──────────────────────────────────────────────────── */
+
+.hero {
+  text-align: center;
+  padding-top: var(--space-10);
+}
+
+.heroTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-4);
+}
+
+.heroSub {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ── Card ──────────────────────────────────────────────────── */
+
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Field ─────────────────────────────────────────────────── */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.required {
+  color: var(--color-accent);
+  margin-left: var(--space-1);
+}
+
+.hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+/* ── Input / Textarea / Select shared styles ───────────────── */
+
+.input,
+.textarea,
+.select {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  width: 100%;
+  outline: none;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: var(--steel-blue);
+  box-shadow: 0 0 0 3px rgba(102, 155, 188, 0.18);
+}
+
+.input:disabled,
+.textarea:disabled,
+.select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: var(--leading-relaxed);
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a96a3' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-4) center;
+  padding-right: var(--space-10);
+  cursor: pointer;
+}
+
+/* ── Expand toggle ─────────────────────────────────────────── */
+
+.expandBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  width: 100%;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.expandBtn:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+
+.expandHint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--weight-regular);
+  margin-left: var(--space-1);
+}
+
+/* ── Optional fields grid ──────────────────────────────────── */
+
+.optionalGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  padding-top: var(--space-5);
+}
+
+.spanFull {
+  grid-column: 1 / -1;
+}
+
+/* ── Boolean toggles ───────────────────────────────────────── */
+
+.toggleRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-8);
+  padding-top: var(--space-1);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggleInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggleTrack {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.toggleInput:checked + .toggleTrack {
+  background: var(--steel-blue);
+}
+
+.toggleInput:disabled + .toggleTrack {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: var(--radius-full);
+  transition: transform var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+}
+
+.toggleInput:checked + .toggleTrack .toggleThumb {
+  transform: translateX(16px);
+}
+
+.toggleLabel {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ── Error ─────────────────────────────────────────────────── */
+
+.error {
+  font-size: var(--text-sm);
+  color: var(--brick-red);
+  background: rgba(193, 18, 31, 0.07);
+  border: 1px solid rgba(193, 18, 31, 0.20);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+/* ── Submit button ─────────────────────────────────────────── */
+
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: white;
+  background: var(--brick-red);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-8);
+  cursor: pointer;
+  width: 100%;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  letter-spacing: 0.01em;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: var(--molten-lava);
+  box-shadow: 0 4px 14px rgba(120, 0, 0, 0.28);
+  transform: translateY(-1px);
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.submitBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner spin animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── Shortcut hint ─────────────────────────────────────────── */
+
+.shortcut {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin: calc(-1 * var(--space-2)) 0 0;
+}
+
+.kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 3px;
+  padding: 1px 5px;
+  color: var(--color-text-secondary);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .card {
+    padding: var(--space-5);
+    gap: var(--space-5);
+  }
+
+  .heroTitle {
+    font-size: var(--text-3xl);
+  }
+
+  .heroSub {
+    font-size: var(--text-base);
+  }
+
+  .optionalGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .spanFull {
+    grid-column: 1;
+  }
+
+  .toggleRow {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+}

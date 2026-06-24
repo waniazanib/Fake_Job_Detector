@@ -1,0 +1,104 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+}
+
+/* ── Banner ────────────────────────────────────────────────── */
+
+.banner {
+  background: rgba(217, 119, 6, 0.10);
+  border-bottom: 1px solid rgba(217, 119, 6, 0.25);
+  color: #92580a;
+  font-size: var(--text-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-8);
+  overflow: hidden;
+}
+
+.bannerError {
+  background: rgba(193, 18, 31, 0.08);
+  border-bottom-color: rgba(193, 18, 31, 0.20);
+  color: var(--brick-red);
+}
+
+.bannerDot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: currentColor;
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+.bannerCode {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: rgba(0, 0, 0, 0.07);
+  border-radius: var(--radius-sm);
+  padding: 1px 6px;
+}
+
+/* ── Main ──────────────────────────────────────────────────── */
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-8) var(--space-16);
+}
+
+.viewWrapper {
+  width: 100%;
+}
+
+.resultWrapper {
+  max-width: 860px;
+  margin: var(--space-10) auto 0;
+}
+
+/* ── Footer ────────────────────────────────────────────────── */
+
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-6) var(--space-8);
+  text-align: center;
+}
+
+.footer p {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+.footerAccent {
+  font-family: var(--font-mono);
+  color: var(--color-text-secondary);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .main {
+    padding: 0 var(--space-4) var(--space-12);
+  }
+
+  .banner {
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-xs);
+  }
+
+  .resultWrapper {
+    margin-top: var(--space-6);
+  }
+}
