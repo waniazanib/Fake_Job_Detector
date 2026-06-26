@@ -153,11 +153,11 @@ export default function ScoreGauge({
         {/* 0%  → top    (110, 30)  */}
         <text x={CX}       y={CY - R - 10} textAnchor="middle" className={styles.tick}>0%</text>
         {/* 25% → right  (190, 110) */}
-        <text x={CX + R + 10} y={CY + 4}  textAnchor="start"  className={styles.tick}>25%</text>
+        <text x={CX + R + 10} y={CY + 4}  textAnchor="start"  className={styles.tick}>75%</text>
         {/* 50% → bottom (110, 190) */}
         <text x={CX}       y={CY + R + 18} textAnchor="middle" className={styles.tick}>50%</text>
         {/* 75% → left   (30, 110)  */}
-        <text x={CX - R - 10} y={CY + 4}  textAnchor="end"    className={styles.tick}>75%</text>
+        <text x={CX - R - 10} y={CY + 4}  textAnchor="end"    className={styles.tick}>25%</text>
 
       </svg>
     </div>
