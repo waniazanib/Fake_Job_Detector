@@ -1,5 +1,5 @@
 // ============================================================
-// api.ts — JobGuard frontend type contracts
+// api.ts — JobGuard Frontend type contracts
 // Must stay in sync with backend/src/schemas.py
 // ============================================================
 
@@ -14,58 +14,58 @@ export type ShapDirection = 'fraud' | 'safe'
 // ── Request ──────────────────────────────────────────────────
 
 export interface JobPostingRequest {
-  title:               string | null
-  description:         string | null
-  requirements:        string | null
-  benefits:            string | null
-  company_profile:     string | null
-  location:            string | null
-  salary_range:        string | null
-  employment_type:     string | null
+  title: string | null
+  description: string | null
+  requirements: string | null
+  benefits: string | null
+  company_profile: string | null
+  location: string | null
+  salary_range: string | null
+  employment_type: string | null
   required_experience: string | null
-  required_education:  string | null
-  has_company_logo:    boolean
-  has_questions:       boolean
-  telecommuting:       boolean
+  required_education: string | null
+  has_company_logo: boolean
+  has_questions: boolean
+  telecommuting: boolean
 }
 
 // ── SHAP signal ───────────────────────────────────────────────
 
 export interface ShapSignal {
-  feature:      string         // internal name e.g. 'has_salary'
+  feature: string         // internal name e.g. 'has_salary'
   display_name: string         // human label e.g. 'Salary not listed'
-  value:        number         // raw feature value
-  impact:       number         // absolute SHAP contribution ≥ 0
-  direction:    ShapDirection  // 'fraud' | 'safe'
-  explanation:  string         // one-sentence plain-English reason
+  value: number         // raw feature value
+  impact: number         // absolute SHAP contribution ≥ 0
+  direction: ShapDirection  // 'fraud' | 'safe'
+  explanation: string         // one-sentence plain-English reason
 }
 
 // ── Response ─────────────────────────────────────────────────
 
 export interface AnalyzeResponse {
-  fraud_score:  number          // fused probability [0, 1]
-  label:        FraudLabel
-  confidence:   ConfidenceLevel
-  text_score:   number          // DistilBERT branch probability
+  fraud_score: number          // fused probability [0, 1]
+  label: FraudLabel
+  confidence: ConfidenceLevel
+  text_score: number          // DistilBERT branch probability
   struct_score: number          // XGBoost branch probability
   shap_signals: ShapSignal[]    // top 5, sorted by impact desc
-  summary:      string          // auto-generated plain-English sentence
+  summary: string          // auto-generated plain-English sentence
 }
 
 // ── Health ────────────────────────────────────────────────────
 
 export interface HealthResponse {
-  status:        string
+  status: string
   models_loaded: boolean
-  xgb_ready:    boolean
-  bert_ready:   boolean
+  xgb_ready: boolean
+  bert_ready: boolean
 }
 
 // ── API error ─────────────────────────────────────────────────
 
 export interface ApiError {
   detail: string
-  code:   string
+  code: string
 }
 
 // ── UI state helpers ──────────────────────────────────────────
@@ -73,22 +73,22 @@ export interface ApiError {
 /** Maps FraudLabel → CSS class suffix used in index.css badge utilities */
 export const LABEL_CLASS: Record<FraudLabel, string> = {
   LEGITIMATE: 'badge--legitimate',
-  CAUTION:    'badge--caution',
+  CAUTION: 'badge--caution',
   SUSPICIOUS: 'badge--suspicious',
 }
 
 /** Maps FraudLabel → user-facing display string */
 export const LABEL_COPY: Record<FraudLabel, string> = {
   LEGITIMATE: 'Likely Legitimate',
-  CAUTION:    'Proceed with Caution',
+  CAUTION: 'Proceed with Caution',
   SUSPICIOUS: 'Likely Fraudulent',
 }
 
 /** Maps ConfidenceLevel → display string */
 export const CONFIDENCE_COPY: Record<ConfidenceLevel, string> = {
-  HIGH:   'High confidence',
+  HIGH: 'High confidence',
   MEDIUM: 'Medium confidence',
-  LOW:    'Low confidence — branches disagree',
+  LOW: 'Low confidence — branches disagree',
 }
 
 /** Score thresholds — must match backend predict.py constants */
@@ -106,17 +106,17 @@ export function scoreToLabel(score: number): FraudLabel {
 
 /** Empty request — used to initialise the JobForm */
 export const EMPTY_REQUEST: JobPostingRequest = {
-  title:               null,
-  description:         null,
-  requirements:        null,
-  benefits:            null,
-  company_profile:     null,
-  location:            null,
-  salary_range:        null,
-  employment_type:     null,
+  title: null,
+  description: null,
+  requirements: null,
+  benefits: null,
+  company_profile: null,
+  location: null,
+  salary_range: null,
+  employment_type: null,
   required_experience: null,
-  required_education:  null,
-  has_company_logo:    false,
-  has_questions:       false,
-  telecommuting:       false,
+  required_education: null,
+  has_company_logo: false,
+  has_questions: false,
+  telecommuting: false,
 }

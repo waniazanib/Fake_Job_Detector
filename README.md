@@ -68,7 +68,7 @@ python -m spacy download en_core_web_sm
 ### Frontend
 
 ```bash
-cd frontend
+cd Frontend
 npm install
 ```
 
@@ -99,7 +99,7 @@ python src/train.py
 # Start Backend (from Backend/)
 uvicorn main:app --reload --port 8000
 
-# Start frontend (from frontend/)
+# Start Frontend (from Frontend/)
 npm run dev
 ```
 
@@ -120,9 +120,9 @@ The API is also available directly at `http://localhost:8000/docs` (Swagger UI).
 | `DISTILBERT_MODEL` | `distilbert-base-uncased` | HuggingFace model ID |
 | `FUSION_TEXT_WEIGHT` | `0.55` | DistilBERT branch weight in fusion |
 | `FUSION_STRUCT_WEIGHT` | `0.45` | XGBoost branch weight in fusion |
-| `FRONTEND_ORIGIN` | `http://localhost:5173` | Allowed CORS origin |
+| `Frontend_ORIGIN` | `http://localhost:5173` | Allowed CORS origin |
 
-### `frontend/.env`
+### `Frontend/.env`
 | Variable | Default | Description |
 |---|---|---|
 | `VITE_API_BASE_URL` | `http://localhost:8000` | Backend base URL |
@@ -151,7 +151,7 @@ jobguard/
 │   ├── requirements.txt
 │   └── .env
 │
-├── frontend/
+├── Frontend/
 │   └── src/
 │       ├── api/analyze.ts            # Axios API layer
 │       ├── types/api.ts              # TypeScript contracts

@@ -13,11 +13,14 @@
 
 FROM node:20-slim AS Frontend-builder
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 make g++ \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app/Frontend
 
 COPY Frontend/package.json Frontend/package-lock.json* ./
-RUN npm install
-RUN npm run build
+RUN npm install --verbose
 
 COPY Frontend/ .
 RUN npm run build || (cat /app/Frontend/node_modules/.bin/tsc 2>/dev/null; exit 1)
