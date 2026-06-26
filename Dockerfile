@@ -39,7 +39,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # ── Python deps ───────────────────────────────────────────────
-COPY Backend/requirements.txt .
+COPY requirements.txt .
 
 # CPU-only torch — saves ~1.5GB vs CUDA build
 RUN pip install --no-cache-dir \
