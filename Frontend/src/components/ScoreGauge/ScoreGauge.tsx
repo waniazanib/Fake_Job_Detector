@@ -1,199 +1,121 @@
-import { useEffect, useRef } from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
-import type { FraudLabel } from '@/types/api'
-import styles from './ScoreGauge.module.css'
-
-// ── Arc geometry ──────────────────────────────────────────────
-const CX = 100   // centre x
-const CY = 100   // centre y
-const R  = 75    // radius
-
-// Angle in degrees: score=0 -> 180° (left). Clockwise progression.
-function scoreToAngleDeg(score: number): number {
-  return 180 - score * 360
-}
-
-function degToRad(deg: number): number {
-  return (deg * Math.PI) / 180
-}
-
-function pointOnCircle(angleDeg: number): { x: number; y: number } {
-  const rad = degToRad(angleDeg)
-  return {
-    x: CX + R * Math.cos(rad),
-    y: CY + R * Math.sin(rad), // SVG Y-axis is flipped
-  }
-}
-
-function describeArc(score: number): string {
-  // 1. Handle exact boundaries cleanly
-  if (score <= 0) {
-    return `M ${CX - R} ${CY}`
-  }
-  if (score >= 1) {
-    // Two half-circle arcs create a perfectly seamless 100% complete circle
-    return `M ${CX - R} ${CY} A ${R} ${R} 0 1 0 ${CX + R} ${CY} A ${R} ${R} 0 1 0 ${CX - R} ${CY}`
-  }
-
-  // 2. Intermediate progress
-  const startAngle = 180 
-  const endAngle   = scoreToAngleDeg(score)
-
-  const start    = pointOnCircle(startAngle)
-  const end      = pointOnCircle(endAngle)
-  const largeArc = score > 0.5 ? 1 : 0
-
-  // sweep-flag=0 handles clockwise visual drawing with flipped SVG coordinates
-  return `M ${start.x} ${start.y} A ${R} ${R} 0 ${largeArc} 0 ${end.x} ${end.y}`
-}
-
-function scoreToColor(score: number): string {
-  if (score < 0.35) return 'var(--color-score-low)'
-  if (score < 0.65) return 'var(--color-score-mid)'
-  if (score < 0.85) return 'var(--color-score-high)'
-  return 'var(--color-score-critical)'
-}
-
-const LABEL_LINES: Record<FraudLabel, [string, string]> = {
-  LEGITIMATE: ['Likely',       'Legitimate'],
-  CAUTION:    ['Proceed with', 'Caution'],
-  SUSPICIOUS: ['Likely',       'Fraudulent'],
-}
+import React from 'react';
+import styles from './ScoreGauge.module.css';
 
 interface ScoreGaugeProps {
-  score:    number
-  label:    FraudLabel
-  animate?: boolean
+  score: number; // Percentage from 0 to 100
+  labelLine1?: string;
+  labelLine2?: string;
 }
 
-export default function ScoreGauge({
-  score,
-  label,
-  animate: shouldAnimate = true,
-}: ScoreGaugeProps) {
-  const motionScore = useMotionValue(shouldAnimate ? 0 : score)
-  const arcRef      = useRef<SVGPathElement>(null)
-  const pctRef      = useRef<SVGTextElement>(null)
+export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
+  score = 0,
+  labelLine1 = "Score",
+  labelLine2 = "Overall"
+}) => {
+  // Ensure score stays bounded between 0 and 100
+  const clappedScore = Math.max(0, Math.min(100, score));
 
-  useEffect(() => {
-    if (!shouldAnimate) {
-      motionScore.set(score)
-      return
-    }
-    const controls = animate(motionScore, score, {
-      duration: 1.1,
-      ease:     [0.34, 1.06, 0.64, 1],
-    })
-    const unsub = motionScore.on('change', (v) => {
-      if (arcRef.current) {
-        arcRef.current.setAttribute('d', describeArc(v))
-        arcRef.current.setAttribute('stroke', scoreToColor(v))
-      }
-      if (pctRef.current) {
-        pctRef.current.textContent = `${Math.round(v * 100)}%`
-      }
-    })
-    return () => {
-      controls.stop()
-      unsub()
-    }
-  }, [score, shouldAnimate, motionScore])
+  // Geometry Constants
+  const size = 200;
+  const center = size / 2;
+  const radius = 85; // leaves room for stroke width and dot radius
+  const circumference = 2 * Math.PI * radius;
 
-  const color          = scoreToColor(score)
-  const [line1, line2] = LABEL_LINES[label]
+  // 1. Calculate stroke offset for progress (fills clockwise)
+  const strokeDashoffset = circumference - (clappedScore / 100) * circumference;
+
+  // 2. Calculate Dot position using corrected Trig angles (0% = top center)
+  const angleInRadians = (clappedScore / 100) * (2 * Math.PI) - Math.PI / 2;
+  const dotX = center + radius * Math.cos(angleInRadians);
+  const dotY = center + radius * Math.sin(angleInRadians);
+
+  // Determine dynamic color based on score thresholds (matching your image styles)
+  let strokeColor = 'var(--color-danger, #e53e3e)'; // Default red
+  if (clappedScore < 30) {
+    strokeColor = '#fef08a'; // Light yellow for low scores like 18%
+  } else if (clappedScore < 70) {
+    strokeColor = '#ff3b30'; // Bright red/orange for mid scores like 42%, 64%
+  } else {
+    strokeColor = '#990000'; // Deep crimson maroon for high scores like 98%
+  }
 
   return (
-    <div className={styles.wrapper} role="img" aria-label={`Fraud score ${Math.round(score * 100)}%`}>
-      <svg viewBox="0 0 200 210" className={styles.svg} aria-hidden="true">
-
-        {/* ── Background Track ── */}
+    <div className={styles.wrapper}>
+      <svg 
+        viewBox={`0 0 ${size} ${size}`} 
+        className={styles.svg}
+      >
+        {/* Background Circle (Beige Track) */}
         <circle
-          cx={CX}
-          cy={CY}
-          r={R}
+          cx={center}
+          cy={center}
+          r={radius}
           fill="none"
-          stroke="var(--color-border)"
-          strokeWidth="10"
+          stroke="#f7f7e8" /* Light beige track */
+          strokeWidth="12"
         />
 
-        {/* ── Animated Active Score Arc ── */}
-        <path
-          ref={arcRef}
-          d={describeArc(shouldAnimate ? 0 : score)}
+        {/* Progress Circle */}
+        <circle
+          cx={center}
+          cy={center}
+          r={radius}
           fill="none"
-          stroke={color}
-          strokeWidth="10"
+          stroke={strokeColor}
+          strokeWidth="12"
+          strokeDasharray={circumference}
+          strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
+          transform={`rotate(-90 ${center} ${center})`} /* Rotates start to 12 o'clock */
+          style={{ transition: 'stroke-dashoffset 0.35s ease-in-out' }}
         />
 
-        {/* ── Moving Needle Dot ── */}
-        <NeedleDot score={score} shouldAnimate={shouldAnimate} />
+        {/* Active Indicator Dot */}
+        <circle
+          cx={dotX}
+          cy={dotY}
+          r={7}
+          fill={strokeColor}
+          stroke="#000000"
+          strokeWidth="2"
+          style={{ transition: 'cx 0.35s ease, cy 0.35s ease' }}
+        />
 
-        {/* ── Center Percentage ── */}
+        {/* Center Text Typography */}
         <text
-          ref={pctRef}
-          x={CX}
-          y={CY - 8}
+          x={center}
+          y={center + 8}
           textAnchor="middle"
-          dominantBaseline="auto"
           className={styles.pctText}
-          fill={color}
+          fill="#000000"
         >
-          {shouldAnimate ? '0%' : `${Math.round(score * 100)}%`}
+          {clappedScore}%
         </text>
 
-        {/* ── Label Context Lines ── */}
-        <text x={CX} y={CY + 10} textAnchor="middle" dominantBaseline="auto"
-              className={styles.labelLine1} fill="var(--color-text-muted)">
-          {line1}
-        </text>
-        <text x={CX} y={CY + 26} textAnchor="middle" dominantBaseline="auto"
-              className={styles.labelLine2} fill="var(--color-text-primary)">
-          {line2}
-        </text>
-
-        {/* ── Structural Progress Markers ── */}
-        <text x={CX - R - 6} y={CY + 4}   textAnchor="end"    className={styles.tick}>0%</text>
-        <text x={CX + R + 6} y={CY + 4}   textAnchor="start"  className={styles.tick}>50%</text>
-        <text x={CX}         y={CY - R - 8} textAnchor="middle" className={styles.tick}>25%</text>
-        <text x={CX}         y={CY + R + 16} textAnchor="middle" className={styles.tick}>75%</text>
-
+        {labelLine1 && (
+          <text
+            x={center}
+            y={center - 24}
+            textAnchor="middle"
+            className={styles.labelLine1}
+            fill="var(--color-text-muted)"
+          >
+            {labelLine1}
+          </text>
+        )}
+        
+        {labelLine2 && (
+          <text
+            x={center}
+            y={center + 28}
+            textAnchor="middle"
+            className={styles.labelLine2}
+            fill="var(--color-text)"
+          >
+            {labelLine2}
+          </text>
+        )}
       </svg>
     </div>
-  )
-}
-
-interface NeedleDotProps {
-  score:         number
-  shouldAnimate: boolean
-}
-
-function NeedleDot({ score, shouldAnimate }: NeedleDotProps) {
-  const motionScore = useMotionValue(shouldAnimate ? 0 : score)
-
-  const dotX = useTransform(motionScore, (v) => pointOnCircle(scoreToAngleDeg(v)).x)
-  const dotY = useTransform(motionScore, (v) => pointOnCircle(scoreToAngleDeg(v)).y)
-
-  useEffect(() => {
-    if (!shouldAnimate) {
-      motionScore.set(score)
-      return
-    }
-    const controls = animate(motionScore, score, {
-      duration: 1.1,
-      ease:     [0.34, 1.06, 0.64, 1],
-    })
-    return () => controls.stop()
-  }, [score, shouldAnimate, motionScore])
-
-  return (
-    <motion.circle
-      cx={dotX as unknown as number}
-      cy={dotY as unknown as number}
-      r={5}
-      fill={scoreToColor(score)}
-      stroke="white"
-      strokeWidth={2}
-    />
-  )
-}
+  );
+};
