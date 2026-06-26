@@ -21,7 +21,7 @@ function pointOnCircle(angleDeg: number): { x: number; y: number } {
   const rad = degToRad(angleDeg)
   return {
     x: CX + R * Math.cos(rad),
-    y: CY - R * Math.sin(rad), // SVG Y-axis is flipped
+    y: CY + R * Math.sin(rad), // SVG Y-axis is flipped
   }
 }
 
