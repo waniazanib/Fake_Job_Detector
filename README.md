@@ -1,3 +1,12 @@
+---
+title: JobGuard
+emoji: 🛡️
+colorFrom: red
+colorTo: blue
+sdk: docker
+pinned: false
+---
+
 # JobGuard — Fake Job Posting Detector
 
 An AI-powered web application that analyses job postings for fraud signals using a dual-branch machine learning architecture. Paste any job listing and receive an instant fraud probability score with explainable feature contributions.
