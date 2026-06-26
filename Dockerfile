@@ -9,18 +9,19 @@
 # (Settings → Repository secrets → New secret → HF_TOKEN)
 # ============================================================
 
-# ── Stage 1: Build React frontend ────────────────────────────
+# ── Stage 1: Build React Frontend ────────────────────────────
 
-FROM node:20-slim AS frontend-builder
+FROM node:20-slim AS Frontend-builder
 
 WORKDIR /app/Frontend
 
 COPY Frontend/package.json Frontend/package-lock.json* ./
-RUN npm ci --include=dev
+RUN npm install
+RUN npm run build
 
 COPY Frontend/ .
 RUN npm run build || (cat /app/Frontend/node_modules/.bin/tsc 2>/dev/null; exit 1)
-# Output: /app/frontend/dist
+# Output: /app/Frontend/dist
 
 
 # ── Stage 2: Python Backend ───────────────────────────────────
@@ -61,15 +62,15 @@ COPY Backend/src/     ./src/
 COPY Backend/download_models.py ./download_models.py
 RUN python download_models.py
 
-# ── Copy built frontend ───────────────────────────────────────
-COPY --from=frontend-builder /app/Frontend/dist ./static/
+# ── Copy built Frontend ───────────────────────────────────────
+COPY --from=Frontend-builder /app/Frontend/dist ./static/
 
 # ── Environment ───────────────────────────────────────────────
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     MODEL_DIR=/app/models \
     ALLOW_TRAIN=false \
-    FRONTEND_ORIGIN=* \
+    Frontend_ORIGIN=* \
     HF_MODEL_REPO=waniazanib/Job_Checking_Model
 
 # HF Spaces only exposes 7860
