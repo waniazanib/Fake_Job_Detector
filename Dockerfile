@@ -13,12 +13,12 @@
 
 FROM node:20-slim AS frontend-builder
 
-WORKDIR /app/frontend
+WORKDIR /app/Frontend
 
-COPY frontend/package.json frontend/package-lock.json* ./
+COPY package.json package-lock.json* ./
 RUN npm ci --silent
 
-COPY frontend/ .
+COPY Frontend/ .
 RUN npm run build
 # Output: /app/frontend/dist
 
@@ -63,7 +63,7 @@ COPY Backend/download_models.py ./download_models.py
 RUN python download_models.py
 
 # ── Copy built frontend ───────────────────────────────────────
-COPY --from=frontend-builder /app/frontend/dist ./static/
+COPY --from=frontend-builder /app/Frontend/dist ./static/
 
 # ── Environment ───────────────────────────────────────────────
 ENV PYTHONUNBUFFERED=1 \
@@ -71,7 +71,7 @@ ENV PYTHONUNBUFFERED=1 \
     MODEL_DIR=/app/models \
     ALLOW_TRAIN=false \
     FRONTEND_ORIGIN=* \
-    HF_MODEL_REPO=<your-username>/jobguard-models
+    HF_MODEL_REPO=waniazanib/Job_Checking_Model
 
 # HF Spaces only exposes 7860
 EXPOSE 7860
