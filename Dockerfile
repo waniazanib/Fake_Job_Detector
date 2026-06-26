@@ -15,11 +15,11 @@ FROM node:20-slim AS frontend-builder
 
 WORKDIR /app/Frontend
 
-COPY package.json package-lock.json* ./
-RUN npm ci --silent
+COPY Frontend/package.json Frontend/package-lock.json* ./
+RUN npm ci --include=dev
 
 COPY Frontend/ .
-RUN npm run build
+RUN npm run build || (cat /app/Frontend/node_modules/.bin/tsc 2>/dev/null; exit 1)
 # Output: /app/frontend/dist
 
 
