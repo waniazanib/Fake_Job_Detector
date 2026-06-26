@@ -32,7 +32,7 @@ function describeArc(score: number): string {
   const largeArc = clipped > 0.5 ? 1 : 0
 
   // sweep-flag = 1 means clockwise
-  return `M ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}`
+  return `M ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 0 ${x2} ${y2}`
 }
 
 /** Full background track arc (always 180°). */
