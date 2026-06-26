@@ -4,6 +4,7 @@
 # Backend ignores
 Backend/data/
 Backend/models/
+Backend/Not_Tracked_Models/
 
 # Frontend ignores
 Frontend/node_modules/

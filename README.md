@@ -44,12 +44,12 @@ An AI-powered web application that analyses job postings for fraud signals using
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+
-- Trained model files in `backend/models/` (see Training section below)
+- Trained model files in `Backend/models/` (see Training section below)
 
 ### Backend
 
 ```bash
-cd backend
+cd Backend
 python -m venv venv
 source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -67,27 +67,27 @@ npm install
 
 ## Training
 
-Download `fake_job_postings.csv` from [Kaggle](https://www.kaggle.com/datasets/shivamb/real-or-fake-fake-jobposting-prediction) and place it in `backend/data/`.
+Download `fake_job_postings.csv` from [Kaggle](https://www.kaggle.com/datasets/shivamb/real-or-fake-fake-jobposting-prediction) and place it in `Backend/data/`.
 
 **Option A — Local (CPU, ~4 hours)**
 ```bash
-cd backend
+cd Backend
 python src/train.py
 ```
 
 **Option B — Google Colab (GPU, ~35 minutes, recommended)**
 
-1. Upload `colab_train.py` and `backend/src/features.py` to Colab
+1. Upload `colab_train.py` and `Backend/src/features.py` to Colab
 2. Upload `fake_job_postings.csv` to the Colab files tab
 3. Run the notebook — models save to Google Drive automatically
-4. Download the generated `jobguard_models.zip` and extract into `backend/models/`
+4. Download the generated `jobguard_models.zip` and extract into `Backend/models/`
 
 ---
 
 ## Usage
 
 ```bash
-# Start backend (from backend/)
+# Start Backend (from Backend/)
 uvicorn main:app --reload --port 8000
 
 # Start frontend (from frontend/)
@@ -102,7 +102,7 @@ The API is also available directly at `http://localhost:8000/docs` (Swagger UI).
 
 ## Environment Variables
 
-### `backend/.env`
+### `Backend/.env`
 | Variable | Default | Description |
 |---|---|---|
 | `ALLOW_TRAIN` | `true` | Enables `POST /api/train` endpoint |
@@ -124,7 +124,7 @@ The API is also available directly at `http://localhost:8000/docs` (Swagger UI).
 
 ```
 jobguard/
-├── backend/
+├── Backend/
 │   ├── data/                         # EMSCAD dataset (not committed)
 │   ├── models/                       # Trained model artefacts (not committed)
 │   │   ├── xgb_model.joblib

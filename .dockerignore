@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+__pycache__/
+
+# Node
+frontend/node_modules/
+frontend/.next/
+
+# Data — never commit or send to Docker
+Backend/data/
+Backend/Not_Tracked_Models/
+
+# Dev artefacts
+*.log
+.env.local
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docs
+*.md
+AppFlow.md
+
+# train script not needed in container
+Backend/src/train.py

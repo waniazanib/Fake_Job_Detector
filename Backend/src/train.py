@@ -10,7 +10,7 @@ Run once to produce:
   models/distilbert_onnx/tokenizer/     (tokenizer saved alongside ONNX)
 
 Usage:
-  cd backend
+  cd Backend
   python src/train.py
 
 Expects:
@@ -721,7 +721,7 @@ def main() -> None:
         raise FileNotFoundError(
             f"Dataset not found at {DATA_PATH}. "
             "Download from https://www.kaggle.com/datasets/shivamb/real-or-fake-fake-jobposting-prediction "
-            "and place fake_job_postings.csv in backend/data/"
+            "and place fake_job_postings.csv in Backend/data/"
         )
 
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
