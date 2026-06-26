@@ -19,9 +19,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app/Frontend
 
+WORKDIR /app/Frontend
 COPY Frontend/package.json Frontend/package-lock.json* ./
-RUN node --version && npm --version
-RUN npm install --prefer-offline 2>&1 || npm install --registry https://registry.npmjs.org 2>&1 || exit 1
+RUN ls -la
+RUN cat package.json
+RUN npm install
 
 COPY Frontend/ .
 RUN npm run build || (cat /app/Frontend/node_modules/.bin/tsc 2>/dev/null; exit 1)
