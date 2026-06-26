@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app/Frontend
 
 COPY Frontend/package.json Frontend/package-lock.json* ./
-RUN npm install --verbose
+RUN npm install 2>&1 || (cat /root/.npm/_logs/*.log && exit 1)
 
 COPY Frontend/ .
 RUN npm run build || (cat /app/Frontend/node_modules/.bin/tsc 2>/dev/null; exit 1)
