@@ -28,6 +28,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 # ---------------------------------------------------------------------------
 # Path setup — allows `from src.X import Y` to work when running from
@@ -352,6 +354,24 @@ async def trigger_train() -> JSONResponse:
 # ---------------------------------------------------------------------------
 # Dev runner
 # ---------------------------------------------------------------------------
+STATIC_DIR = Path(__file__).parent / "static"
+
+if STATIC_DIR.exists():
+    app.mount("/assets", StaticFiles(directory=str(STATIC_DIR / "assets")), name="assets")
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa(full_path: str):
+        index = STATIC_DIR / "index.html"
+        if index.exists():
+            return FileResponse(str(index))
+        return JSONResponse({"detail": "Frontend not built."}, status_code=404)
+    
+    @app.get("/", include_in_schema=False)
+    async def serve_root():
+        index = STATIC_DIR / "index.html"
+        if index.exists():
+            return FileResponse(str(index))
+        return JSONResponse({"detail": "Frontend not built."}, status_code=404)
 
 if __name__ == "__main__":
     import uvicorn

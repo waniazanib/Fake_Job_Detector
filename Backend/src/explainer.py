@@ -39,7 +39,7 @@ TOP_N = 5
 
 # SHAP value magnitude below which a signal is considered negligible.
 # Filters out features that technically contributed but are noise-level.
-_MIN_IMPACT_THRESHOLD = 0.005
+_MIN_IMPACT_THRESHOLD = 0.01
 
 
 class Explainer:
@@ -61,7 +61,6 @@ class Explainer:
         # as contributions to the fraud probability (not log-odds).
         self._explainer = shap.TreeExplainer(
             xgb_model,
-            model_output="probability",
             feature_names=FEATURE_COLUMNS,
         )
         log.info("SHAP TreeExplainer ready.")
