@@ -1,0 +1,27 @@
+name: Sync to Hugging Face Spaces
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-to-hf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0        # full history required for HF sync
+          lfs: true             # pull any Git LFS files if present
+
+      - name: Push to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global credential.helper store
+          echo "https://user:${HF_TOKEN}@huggingface.co" > ~/.git-credentials
+
+          git remote add space https://huggingface.co/spaces/waniazanib/Fake_Job_Detector || true
+          git push space main --force
