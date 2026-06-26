@@ -133,6 +133,9 @@ The API is also available directly at `http://localhost:8000/docs` (Swagger UI).
 
 ```
 jobguard/
+├── .github/
+|   └── workflows/                     
+│       └── sync_to_hf.yml
 ├── Backend/
 │   ├── data/                         # EMSCAD dataset (not committed)
 │   ├── models/                       # Trained model artefacts (not committed)
@@ -162,6 +165,8 @@ jobguard/
 │           ├── ShapChart/            # SHAP horizontal bar chart + signal cards
 │           └── ResultPanel/          # Composed result view
 │
+├── .dockerignore
+├── Dockerfile
 ├── colab_train.py                    # Colab-optimised training script
 └── AppFlow.md                        # Architecture and build reference
 ```
