@@ -101,7 +101,7 @@ export default function JobForm({ onResult }: JobFormProps) {
         <h1 className={styles.heroTitle}>Is this job posting real?</h1>
         <p className={styles.heroSub}>
           Paste any job listing below. JobGuard analyses the text and structure
-          using a dual AI model to flag fraud signals instantly.
+          using a dual ML model to flag fraud signals instantly.
         </p>
       </div>
 
@@ -379,11 +379,6 @@ export default function JobForm({ onResult }: JobFormProps) {
             </>
           )}
         </button>
-
-        <p className={styles.shortcut}>
-          Tip: press <kbd className={styles.kbd}>Ctrl</kbd> +{' '}
-          <kbd className={styles.kbd}>Enter</kbd> to submit
-        </p>
 
       </div>
     </section>

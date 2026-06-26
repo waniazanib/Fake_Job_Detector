@@ -12,9 +12,6 @@ export default function Header() {
           </span>
         </div>
 
-        <p className={styles.tagline}>
-          AI-powered fake job posting detector
-        </p>
       </div>
     </header>
   )
