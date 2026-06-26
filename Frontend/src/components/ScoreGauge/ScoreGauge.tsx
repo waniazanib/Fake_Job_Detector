@@ -13,13 +13,16 @@ const R  = 80    // radius
 
 /** Convert a score [0,1] to an SVG arc path clipped at that fraction. */
 function describeArc(score: number): string {
-  // Map score → angle: 0 → 180°(left), 1 → 0°(right)
-  const clipped   = Math.max(0, Math.min(1, score))
-  const startDeg  = 180
-  const endDeg    = 180 - clipped * 180   // sweeps left→right
+  const clipped = Math.max(0, Math.min(1, score))
+  
+  // Start at bottom-left (210°) sweep to bottom-right (330°)
+  // This gives a proper speedometer shape
+  const startDeg = 180
+  const totalDeg = 180
+  const endDeg   = startDeg + clipped * totalDeg
 
-  const startRad  = (startDeg * Math.PI) / 180
-  const endRad    = (endDeg   * Math.PI) / 180
+  const startRad = (startDeg * Math.PI) / 180
+  const endRad   = (endDeg   * Math.PI) / 180
 
   const x1 = CX + R * Math.cos(startRad)
   const y1 = CY + R * Math.sin(startRad)
@@ -28,6 +31,7 @@ function describeArc(score: number): string {
 
   const largeArc = clipped > 0.5 ? 1 : 0
 
+  // sweep-flag = 1 means clockwise
   return `M ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}`
 }
 
@@ -196,11 +200,11 @@ function NeedleDot({ score, shouldAnimate }: NeedleDotProps) {
 
   // x/y of tip: angle = 180 - score * 180 degrees
   const dotX = useTransform(motionScore, (v) => {
-    const deg = 180 - v * 180
+    const deg = 180 + v * 180
     return CX + R * Math.cos((deg * Math.PI) / 180)
   })
   const dotY = useTransform(motionScore, (v) => {
-    const deg = 180 - v * 180
+    const deg = 180 + v * 180
     return CY + R * Math.sin((deg * Math.PI) / 180)
   })
 
